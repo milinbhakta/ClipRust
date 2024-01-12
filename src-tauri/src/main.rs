@@ -26,11 +26,15 @@ const MAX_ITEMS: usize = 50;
 static CONTAINER: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
 fn listen() {
-    let mut clipboard: ClipboardContext = ClipboardProvider::new().expect("Failed to create clipboard context");
+    let mut clipboard: ClipboardContext =
+        ClipboardProvider::new().expect("Failed to create clipboard context");
     let mut last_clipboard_contents = clipboard.get_contents().unwrap_or_else(|_| "".to_string());
     loop {
         match clipboard.get_contents() {
-            Ok(current_clipboard_contents) if !current_clipboard_contents.is_empty() && current_clipboard_contents != last_clipboard_contents => {
+            Ok(current_clipboard_contents)
+                if !current_clipboard_contents.is_empty()
+                    && current_clipboard_contents != last_clipboard_contents =>
+            {
                 last_clipboard_contents = current_clipboard_contents.clone();
                 set(last_clipboard_contents.clone());
             }
@@ -65,7 +69,9 @@ fn set_data(data: String) -> String {
 fn set(data: String) {
     let mut container = CONTAINER.lock().expect("Failed to acquire lock");
 
-    container.push(data);
+    if !container.contains(&data) {
+        container.push(data);
+    }
 
     if container.len() > MAX_ITEMS {
         let overflow = container.len() - MAX_ITEMS;
