@@ -15,8 +15,8 @@ ClipRust is a clipboard manager built with [Tauri](https://tauri.studio/) and [T
 
 To get started with this project, you need to have [Node.js](https://nodejs.org/) and [Rust](https://www.rust-lang.org/) installed on your machine.
 
-1. Clone the repository: `git clone https://github.com/milinbhakta/cliprust.git`
-2. Navigate into the project directory: `cd cliprust`
+1. Clone the repository: `git clone https://github.com/milinbhakta/ClipRust.git`
+2. Navigate into the project directory: `cd ClipRust`
 3. Install the dependencies: `npm install`
 4. Build the Tauri application: `npm run tauri build`
 
