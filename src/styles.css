@@ -1,3 +1,45 @@
+/* Cyan color for light color scheme (Default) */
+/* Can be forced with data-theme="light" */
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --pico-text-selection-color: rgba(5, 162, 162, 0.25);
+  --pico-primary: #047878;
+  --pico-primary-background: #047878;
+  --pico-primary-underline: rgba(4, 120, 120, 0.5);
+  --pico-primary-hover: #025d5d;
+  --pico-primary-hover-background: #046a6a;
+  --pico-primary-focus: rgba(5, 162, 162, 0.5);
+  --pico-primary-inverse: #fff;
+}
+
+/* Cyan color for dark color scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-text-selection-color: rgba(10, 177, 177, 0.1875);
+    --pico-primary: #0ab1b1;
+    --pico-primary-background: #047878;
+    --pico-primary-underline: rgba(10, 177, 177, 0.5);
+    --pico-primary-hover: #0ccece;
+    --pico-primary-hover-background: #058686;
+    --pico-primary-focus: rgba(10, 177, 177, 0.375);
+    --pico-primary-inverse: #fff;
+  }
+}
+
+/* Cyan color for dark color scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme="dark"] {
+  --pico-text-selection-color: rgba(10, 177, 177, 0.1875);
+  --pico-primary: #0ab1b1;
+  --pico-primary-background: #047878;
+  --pico-primary-underline: rgba(10, 177, 177, 0.5);
+  --pico-primary-hover: #0ccece;
+  --pico-primary-hover-background: #058686;
+  --pico-primary-focus: rgba(10, 177, 177, 0.375);
+  --pico-primary-inverse: #fff;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 ::-webkit-scrollbar {
   display: none;
@@ -17,6 +59,53 @@ body {
 /* Exclude buttons from the draggable region */
 button {
   -webkit-app-region: no-drag;
+}
+
+pre {
+  padding: 1.2rem;
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  position: relative;
+}
+
+code {
+  font-family: "Fira Code", monospace;
+  font-size: 0.9em;
+}
+
+.code-container {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.code-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+}
+
+.code-actions button {
+  margin-left: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-color {
+  color: var(--pico-primary-background);
+}
+
+/* clip text with background color */
+.app-name {
+  background: linear-gradient(to right, #7ef29d, #0f68a9);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: xx-large;
 }
 
 #clipContainer {
