@@ -103,12 +103,12 @@ fn hide(app: AppHandle) {
 }
 
 #[tauri::command]
-fn delete_item(index: usize) -> Result<String, String> {
+fn delete_item(data: String) -> Result<String, String> {
     let mut container = CONTAINER.lock().unwrap();
-    if index < container.len() {
-        container.remove(index);
+    if container.contains(&data) {
+        container.retain(|x| x != &data);
         Ok("OK".to_string())
     } else {
-        Err("Index out of bounds".to_string())
+        Err("Item not found".to_string())
     }
 }
