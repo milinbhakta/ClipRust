@@ -16,7 +16,8 @@ fn main() {
             set_data,
             clear,
             toggle_window,
-            hide
+            hide,
+            delete_item
         ])
         .run(tauri::generate_context!())
         .expect("Error while running tauri application");
@@ -99,4 +100,15 @@ fn toggle_window(app: AppHandle) {
 fn hide(app: AppHandle) {
     let window = app.get_window("main").unwrap();
     window.hide().unwrap();
+}
+
+#[tauri::command]
+fn delete_item(index: usize) -> Result<String, String> {
+    let mut container = CONTAINER.lock().unwrap();
+    if index < container.len() {
+        container.remove(index);
+        Ok("OK".to_string())
+    } else {
+        Err("Index out of bounds".to_string())
+    }
 }
