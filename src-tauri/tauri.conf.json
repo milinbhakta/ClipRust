@@ -64,7 +64,7 @@
         "maximized": false,
         "alwaysOnTop": true,
         "decorations": true,
-        "transparent": true
+        "transparent": false
       }
     ],
     "systemTray": {
