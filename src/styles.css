@@ -101,7 +101,7 @@ code {
 
 /* clip text with background color */
 .app-name {
-  background: linear-gradient(to right, #7ef29d, #0f68a9);
+  background: linear-gradient(to right, #1D976C, #93F9B9);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -184,4 +184,19 @@ code {
     bottom: 0;
     opacity: 0;
   }
+}
+
+@keyframes append-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.append {
+  animation: append-animation 0.5s forwards;
 }
