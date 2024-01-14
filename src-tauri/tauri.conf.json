@@ -39,7 +39,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "ClipRust",
         "width": 600,
         "height": 800
