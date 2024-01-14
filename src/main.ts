@@ -135,7 +135,7 @@ class ClipboardManager {
 
   public registerShortcut() {
     let shortcutId: Promise<void> = globalShortcut.register(
-      "Ctrl+Alt+G",
+      "CommandOrControl+Shift+C",
       () => {
         invoke("toggle_window", {}).then((response: unknown) => {
           console.log(response);
