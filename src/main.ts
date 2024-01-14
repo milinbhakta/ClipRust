@@ -75,6 +75,8 @@ class ClipboardManager {
     // Create the copy button
     const copyButton = document.createElement("button");
     copyButton.title = "Copy";
+    copyButton.setAttribute("aria-label", "Copy");
+    copyButton.setAttribute("data-tooltip", "Copy");
     const copyIcon = document.createElement("i");
     copyIcon.className = "fas fa-copy btn-color";
     copyButton.addEventListener("click", (event) => {
@@ -84,6 +86,8 @@ class ClipboardManager {
     // Create the delete button
     const deleteButton = document.createElement("button");
     deleteButton.title = "Delete";
+    deleteButton.setAttribute("aria-label", "Delete");
+    deleteButton.setAttribute("data-tooltip", "Delete");
     const deleteIcon = document.createElement("i");
     deleteIcon.className = "fas fa-trash btn-color";
     deleteButton.addEventListener("click", (event) => {
