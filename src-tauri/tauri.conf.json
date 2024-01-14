@@ -25,7 +25,17 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": ["icons/icon.png", "icons/icon.icns", "icons/icon.ico"],
+      "icon": [
+        "icons/icon.png",
+        "icons/icon.icns",
+        "icons/icon.ico",
+        "icons/128x128.png",
+        "icons/256x256.png",
+        "icons/512x512.png",
+        "icons/Square107x107Logo.png",
+        "icons/Square150x150Logo.png",
+        "icons/Square310x310Logo.png"
+      ],
       "identifier": "clipboard.mutex.top",
       "longDescription": "",
       "macOS": {
@@ -66,10 +76,6 @@
         "decorations": true,
         "transparent": false
       }
-    ],
-    "systemTray": {
-      "iconPath": "icons/icon.png",
-      "iconAsTemplate": true
-    }
+    ]
   }
 }
