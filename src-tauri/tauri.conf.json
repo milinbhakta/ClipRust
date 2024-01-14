@@ -12,65 +12,34 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true,
-      "globalShortcut": {
-        "all": true
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
       }
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "externalBin": [],
+      "targets": "all",
+      "identifier": "com.cliprust.app",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ],
-      "identifier": "clipboard.mutex.top",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": "",
-        "webviewInstallMode": {
-          "type": "downloadBootstrapper"
-        }
-      }
+      ]
     },
     "security": {
       "csp": null
     },
-    "updater": {
-      "active": false
-    },
-    "macOSPrivateApi": true,
     "windows": [
       {
-        "title": "ClipRust",
-        "width": 400,
-        "height": 800,
-        "resizable": false,
         "fullscreen": false,
-        "maximized": false,
-        "alwaysOnTop": true,
-        "decorations": true,
-        "transparent": false
+        "resizable": true,
+        "title": "ClipRust",
+        "width": 600,
+        "height": 800
       }
     ]
   }
