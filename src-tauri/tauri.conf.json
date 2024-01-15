@@ -41,7 +41,7 @@
         "fullscreen": false,
         "resizable": false,
         "title": "ClipRust",
-        "width": 600,
+        "width": 500,
         "height": 800
       }
     ]
