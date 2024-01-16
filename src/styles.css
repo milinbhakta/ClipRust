@@ -120,72 +120,6 @@ code {
   user-select: none; /* Standard syntax */
 }
 
-#snackbar {
-  visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 2px;
-  padding: 16px;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  bottom: 30px;
-  font-size: 17px;
-}
-
-#snackbar.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-@-webkit-keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-@keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-  to {
-    bottom: 0;
-    opacity: 0;
-  }
-}
-
-@keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-  to {
-    bottom: 0;
-    opacity: 0;
-  }
-}
-
 @keyframes append-animation {
   0% {
     opacity: 0;
@@ -274,4 +208,123 @@ code {
 
 #themes button.theme-switcher i {
   font-style: normal;
+}
+
+/* Snackbar */
+#snackbar {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  visibility: hidden;
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0.5rem;
+  font-size: medium;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+#snackbar-message {
+  display: block;
+}
+
+#progressbar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0%;
+  background-image: linear-gradient(to right, #1d976c, #93f9b9);
+  border-radius: inherit;
+  -webkit-animation: none;
+          animation: none;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fade-in 0.5s, fade-out 0.5s 2.5s;
+  animation: fade-in 0.5s, fade-out 0.5s 2.5s;
+}
+
+#snackbar.show #progressbar {
+  -webkit-animation: load 3s linear forwards;
+          animation: load 3s linear forwards; /* Start the animation when snackbar is visible */
+}
+
+@-webkit-keyframes fade-in {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0.5rem;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fade-out {
+  from {
+    bottom: 0.5rem;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    bottom: 0.5rem;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes load {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes load {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
 }

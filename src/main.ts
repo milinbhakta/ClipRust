@@ -17,9 +17,11 @@ class ClipboardManager {
         if (response === "OK") {
           navigator.clipboard.writeText(text ?? "").then(() => {
             const snackbar = document.getElementById("snackbar");
-            if (snackbar) {
+            const snackbarText = document.getElementById("snackbar-message");
+
+            if (snackbar && snackbarText) {
               snackbar.className = "show";
-              snackbar.textContent = "Copied to clipboard!";
+              snackbarText.textContent = "Copied to clipboard!";
               setTimeout(() => {
                 snackbar.className = snackbar.className.replace("show", "");
               }, 3000);
@@ -44,9 +46,10 @@ class ClipboardManager {
       invoke("delete_item", { data: text }).then((response: unknown) => {
         if (response === "OK") {
           const snackbar = document.getElementById("snackbar");
-          if (snackbar) {
+          const snackbarText = document.getElementById("snackbar-message");
+          if (snackbar && snackbarText) {
             snackbar.className = "show";
-            snackbar.textContent = "Deleted!";
+            snackbarText.textContent = "Deleted!";
             setTimeout(() => {
               snackbar.className = snackbar.className.replace("show", "");
             }, 3000);
