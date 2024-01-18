@@ -1,10 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// use clipboard::{ClipboardContext, ClipboardProvider};
 use arboard::{Clipboard, Error as ClipboardError, ImageData};
 mod util;
-use base64::{engine::general_purpose, Engine as _};
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use std::sync::Mutex;
@@ -56,7 +54,10 @@ fn listen() {
                 last_clipboard_contents = current_clipboard_contents.clone();
                 set(last_clipboard_contents.clone(), "text".to_string());
             }
-            Err(e) => println!("get clipboard error: {:?}", e),
+            Err(e) => match e {
+                ClipboardError::ContentNotAvailable => last_clipboard_contents = "".to_string(),
+                _ => println!("get clipboard error: {:?}", e),
+            },
             _ => (),
         }
         match clipboard.get_image() {
@@ -68,7 +69,7 @@ fn listen() {
                 }
             }
             Err(e) => match e {
-                ClipboardError::ContentNotAvailable => (),
+                ClipboardError::ContentNotAvailable => last_image_contents = None,
                 _ => println!("get image error: {:?}", e),
             },
         }
@@ -100,19 +101,24 @@ fn set_data(item: Item) -> Result<String, String> {
             _ => Ok(format!("OK")),
         },
         "image" => {
-            let decoded = general_purpose::STANDARD_NO_PAD
-                .decode(item.data)
-                .map_err(|err| err.to_string())?;
-            let img = image::load_from_memory(&decoded).map_err(|err| err.to_string())?;
+            // Load the image from decoded data
+            let img = util::base64_str_to_image_data(item.data);
+
+            // Convert the image to ImageData
             let img_data = ImageData {
                 height: img.height() as usize,
                 width: img.width() as usize,
                 bytes: Cow::Owned(img.into_bytes()),
             };
+            // Set the image to the clipboard
             clipboard
                 .set_image(img_data)
                 .map(|_| "OK".to_string())
-                .map_err(|err| err.to_string())
+                .map_err(|err| {
+                    // Log or print the original error for debugging
+                    println!("Error setting image to clipboard: {:?}", err);
+                    err.to_string()
+                })
         }
         _ => Err(format!("Unsupported item kind: {}", item.data_type)),
     }
@@ -152,8 +158,6 @@ fn hide(app: AppHandle) {
 
 #[tauri::command]
 fn delete_item(item: Item) -> Result<String, String> {
-    println!("item Delete: {:?}", item);
-
     let mut container = CONTAINER.lock().unwrap();
     if container
         .iter()
@@ -161,7 +165,11 @@ fn delete_item(item: Item) -> Result<String, String> {
     {
         container.retain(|(data, data_type)| data != &item.data || data_type != &item.data_type);
         let mut clipboard: Clipboard = Clipboard::new().unwrap();
-        clipboard.set_text("".to_string()).unwrap();
+        clipboard.clear().map_err(|err| {
+            // Log or print the original error for debugging
+            println!("Error clearing clipboard: {:?}", err);
+            err.to_string()
+        })?;
         Ok("OK".to_string())
     } else {
         Err("Item not found".to_string())
