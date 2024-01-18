@@ -61,6 +61,11 @@ button {
   -webkit-app-region: no-drag;
 }
 
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 pre {
   padding: 1.2rem;
   width: 100%;
@@ -112,7 +117,7 @@ code {
   user-select: none;
 }
 
-.item {
+.items {
   cursor: pointer;
   -webkit-user-select: none; /* Chrome, Safari, Opera */
   -moz-user-select: none; /* Firefox */
