@@ -1,6 +1,20 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { globalShortcut } from "@tauri-apps/api";
 
+interface ClipboardItem {
+  data: string;
+  data_type:
+    | "image"
+    | "text"
+    | "html"
+    | "rtf"
+    | "bookmark"
+    | "file"
+    | "application"
+    | "extension"
+    | "unknown";
+}
+
 class ClipboardManager {
   private clipContainer: HTMLElement | null;
   private previousResponse: string[] = [];
@@ -9,24 +23,28 @@ class ClipboardManager {
     this.clipContainer = document.getElementById(containerId);
   }
 
-  private handleCopy(text: string, event: MouseEvent) {
+  private handleCopy(item: ClipboardItem, event: MouseEvent) {
     const target = event.target as Element;
     event.stopPropagation();
-    if (text && text !== "" && target && target.classList.contains("fa-copy")) {
-      invoke("set_data", { data: text }).then((response: unknown) => {
+    if (
+      item &&
+      item.data !== "" &&
+      item.data_type &&
+      target &&
+      target.classList.contains("fa-copy")
+    ) {
+      invoke("set_data", { item: item }).then((response: unknown) => {
         if (response === "OK") {
-          navigator.clipboard.writeText(text ?? "").then(() => {
-            const snackbar = document.getElementById("snackbar");
-            const snackbarText = document.getElementById("snackbar-message");
+          const snackbar = document.getElementById("snackbar");
+          const snackbarText = document.getElementById("snackbar-message");
 
-            if (snackbar && snackbarText) {
-              snackbar.className = "show";
-              snackbarText.textContent = "Copied to clipboard!";
-              setTimeout(() => {
-                snackbar.className = snackbar.className.replace("show", "");
-              }, 3000);
-            }
-          });
+          if (snackbar && snackbarText) {
+            snackbar.className = "show";
+            snackbarText.textContent = "Copied to clipboard!";
+            setTimeout(() => {
+              snackbar.className = snackbar.className.replace("show", "");
+            }, 3000);
+          }
         } else {
           console.error("An error occurred");
         }
@@ -34,16 +52,17 @@ class ClipboardManager {
     }
   }
 
-  private handleDelete(text: string, event: MouseEvent) {
+  private handleDelete(item: ClipboardItem, event: MouseEvent) {
     const target = event.target as Element;
     event.stopPropagation();
     if (
-      text &&
-      text !== "" &&
+      item &&
+      item.data !== "" &&
+      item.data_type &&
       target &&
       target.classList.contains("fa-trash")
     ) {
-      invoke("delete_item", { data: text }).then((response: unknown) => {
+      invoke("delete_item", { item: item }).then((response: unknown) => {
         if (response === "OK") {
           const snackbar = document.getElementById("snackbar");
           const snackbarText = document.getElementById("snackbar-message");
@@ -61,20 +80,64 @@ class ClipboardManager {
     }
   }
 
-  private createCodeContainer(text: string) {
+  private getFileTypeFromBase64(base64String: string) {
+    try {
+      const byteCharacters = atob(base64String);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray]);
+      const file = new File([blob], "dummyFileName", { type: blob.type });
+
+      // You can use file.type to get the MIME type, and then determine the file extension if needed.
+      return file.type.split("/")[1] || null;
+    } catch (error) {
+      console.error("Error getting file type:", error);
+      return null;
+    }
+  }
+
+  private async createCodeContainer(item: ClipboardItem) {
     // Create the main container
-    const codeContainer = document.createElement("div");
-    codeContainer.className = "code-container";
+    const container = document.createElement("div");
+    container.className = "code-container";
+
     // Create the pre and code elements
     const pre = document.createElement("pre");
     const code = document.createElement("code");
-    code.textContent = text;
-    // Append the code to the pre, and the pre to the main container
-    pre.appendChild(code);
-    codeContainer.appendChild(pre);
+
+    if (item.data_type === "image") {
+      try {
+        const fileType = this.getFileTypeFromBase64(item.data);
+
+        if (fileType) {
+          console.log("File Type:", fileType);
+        } else {
+          console.error("Unable to determine file type.");
+        }
+
+        const img = document.createElement("img");
+        img.src = "data:image/png;base64," + item.data;
+        img.alt = "image";
+        img.className = "image-container";
+        container.appendChild(img);
+      } catch (error) {
+        console.error("Failed to load image from clipboard: ", error);
+      }
+    } else {
+      code.textContent = item.data;
+      pre.appendChild(code);
+      // Append the code to the pre, and the pre to the main container
+      container.appendChild(pre);
+    }
+
     // Create the actions container
-    const codeActions = document.createElement("div");
-    codeActions.className = "code-actions items";
+    const actions = document.createElement("div");
+    actions.className = "code-actions items";
     // Create the copy button
     const copyButton = document.createElement("button");
     copyButton.title = "Copy";
@@ -83,7 +146,7 @@ class ClipboardManager {
     const copyIcon = document.createElement("i");
     copyIcon.className = "fas fa-copy btn-color";
     copyButton.addEventListener("click", (event) => {
-      this.handleCopy(text, event);
+      this.handleCopy(item, event);
     });
     copyButton.appendChild(copyIcon);
     // Create the delete button
@@ -94,21 +157,21 @@ class ClipboardManager {
     const deleteIcon = document.createElement("i");
     deleteIcon.className = "fas fa-trash btn-color";
     deleteButton.addEventListener("click", (event) => {
-      this.handleDelete(text, event);
+      this.handleDelete(item, event);
     });
     deleteButton.appendChild(deleteIcon);
     // Append the buttons to the actions container
-    codeActions.appendChild(copyButton);
-    codeActions.appendChild(deleteButton);
+    actions.appendChild(copyButton);
+    actions.appendChild(deleteButton);
     // Append the actions container to the main container
-    codeContainer.appendChild(codeActions);
+    container.appendChild(actions);
     // Return the main container
-    return codeContainer;
+    return container;
   }
 
   public init() {
-    invoke("items", { s: "" }).then((res: unknown) => {
-      const response = res as string[];
+    invoke("items", { s: "" }).then(async (res: unknown) => {
+      const response = res as ClipboardItem[];
 
       // Check if the response is different from the previous response
       if (JSON.stringify(response) !== JSON.stringify(this.previousResponse)) {
@@ -120,10 +183,10 @@ class ClipboardManager {
           const fragment = document.createDocumentFragment();
 
           for (const item of response) {
-            const tmp = this.createCodeContainer(item);
+            const tmp = await this.createCodeContainer(item);
 
             // Add the "append" class to new items only
-            if (!this.previousResponse.includes(item)) {
+            if (!this.previousResponse.includes(item.data)) {
               tmp.classList.add("append");
             }
 
@@ -135,7 +198,7 @@ class ClipboardManager {
         }
 
         // Update the previous response
-        this.previousResponse = [...response];
+        this.previousResponse = response.map((item) => item.data.toString());
       }
     });
   }
