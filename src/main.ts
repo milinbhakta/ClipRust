@@ -4,15 +4,15 @@ import { globalShortcut } from "@tauri-apps/api";
 interface ClipboardItem {
   data: string;
   data_type:
-  | "image"
-  | "text"
-  | "html"
-  | "rtf"
-  | "bookmark"
-  | "file"
-  | "application"
-  | "extension"
-  | "unknown";
+    | "image"
+    | "text"
+    | "html"
+    | "rtf"
+    | "bookmark"
+    | "file"
+    | "application"
+    | "extension"
+    | "unknown";
 }
 
 class ClipboardManager {
@@ -198,8 +198,8 @@ setInterval(() => clipboardManager.init(), 1000);
 class ThemeSwitcher {
   private _scheme: string = "auto";
   private change = {
-    light: "<i>Turn on dark mode</i>",
-    dark: "<i>Turn off dark mode</i>",
+    light: '<i class="fas fa-moon"></i>',
+    dark: '<i class="fas fa-sun"></i> ',
   };
   private buttonsTarget: string = ".theme-switcher";
   private localStorageKey: string = "picoPreferredColorScheme";
@@ -275,7 +275,7 @@ class ThemeSwitcher {
 const themeSwitcher = new ThemeSwitcher();
 themeSwitcher.addButton({
   tag: "BUTTON",
-  class: "contrast switcher theme-switcher",
-  target: "body",
+  class: "theme-switcher",
+  target: "#header",
 });
 themeSwitcher.init();

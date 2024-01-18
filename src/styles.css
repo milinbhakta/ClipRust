@@ -10,6 +10,7 @@
   --pico-primary-hover-background: #046a6a;
   --pico-primary-focus: rgba(5, 162, 162, 0.5);
   --pico-primary-inverse: #fff;
+  --theme-btn-color: black;
 }
 
 /* Cyan color for dark color scheme (Auto) */
@@ -24,6 +25,7 @@
     --pico-primary-hover-background: #058686;
     --pico-primary-focus: rgba(10, 177, 177, 0.375);
     --pico-primary-inverse: #fff;
+    --theme-btn-color: #fff;
   }
 }
 
@@ -111,6 +113,8 @@ code {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: xx-large;
+  padding: 0;
+  margin: 0;
 }
 
 #clipContainer {
@@ -140,79 +144,12 @@ code {
   animation: append-animation 0.5s forwards;
 }
 
-.switcher {
-  position: fixed;
-  right: calc(var(--spacing) / 2 + var(--scrollbar-width, 0px));
-  bottom: var(--spacing);
-  width: auto;
-  margin-bottom: 0;
-  padding: 0.75rem;
-  border-radius: 2rem;
-  box-shadow: var(--card-box-shadow);
-  line-height: 1;
-  text-align: right;
-}
-
-.switcher::after {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 0.15rem solid currentColor;
-  border-radius: 50%;
-  background: linear-gradient(
-    to right,
-    currentColor 0,
-    currentColor 50%,
-    transparent 50%
-  );
-  content: "";
-  vertical-align: bottom;
-  transition: transform var(--transition);
-}
-
-.switcher i {
-  display: inline-block;
-  max-width: 0;
+#header {
+  position: relative;
   padding: 0;
-  overflow: hidden;
-  font-style: normal;
-  font-size: 0.875rem;
-  white-space: nowrap;
-}
-
-.switcher:focus,
-.switcher:hover {
-  max-width: 100%;
-  transition: background-color var(--transition), border-color var(--transition),
-    color var(--transition), box-shadow var(--transition);
-}
-
-.switcher:hover::after {
-  transform: rotate(180deg);
-}
-
-.switcher:hover i {
-  max-width: 100%;
-  padding: 0 calc(var(--spacing) / 2) 0 calc(var(--spacing) / 4);
-  transition: max-width var(--transition), padding var(--transition);
-}
-
-.switcher:focus {
-  box-shadow: var(--card-box-shadow), 0 0 0 0.2rem var(--secondary-focus);
-}
-
-@media (min-width: 576px) {
-  .switcher {
-    right: calc(var(--spacing) + var(--scrollbar-width, 0px));
-  }
-}
-
-#themes button.theme-switcher:first-of-type {
-  --font-weight: bold;
-}
-
-#themes button.theme-switcher i {
-  font-style: normal;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Snackbar */
@@ -339,4 +276,22 @@ code {
   height: auto;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.theme-switcher {
+  background: none;
+  outline: none;
+  box-shadow: none;
+  --webkit-box-shadow: none;
+  --box-shadow: none;
+  color: var(--theme-btn-color);
+  border: none;
+}
+
+.theme-switcher:focus {
+  outline: none;
+  box-shadow: none;
+  --webkit-box-shadow: none;
+  --box-shadow: none;
+  border: none;
 }
