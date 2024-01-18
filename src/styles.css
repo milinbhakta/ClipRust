@@ -247,7 +247,7 @@ code {
   background-image: linear-gradient(to right, #1d976c, #93f9b9);
   border-radius: inherit;
   -webkit-animation: none;
-          animation: none;
+  animation: none;
 }
 
 #snackbar.show {
@@ -258,7 +258,7 @@ code {
 
 #snackbar.show #progressbar {
   -webkit-animation: load 3s linear forwards;
-          animation: load 3s linear forwards; /* Start the animation when snackbar is visible */
+  animation: load 3s linear forwards; /* Start the animation when snackbar is visible */
 }
 
 @-webkit-keyframes fade-in {
@@ -327,4 +327,11 @@ code {
   to {
     width: 100%;
   }
+}
+
+.image-container {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
