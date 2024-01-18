@@ -4,15 +4,15 @@ import { globalShortcut } from "@tauri-apps/api";
 interface ClipboardItem {
   data: string;
   data_type:
-    | "image"
-    | "text"
-    | "html"
-    | "rtf"
-    | "bookmark"
-    | "file"
-    | "application"
-    | "extension"
-    | "unknown";
+  | "image"
+  | "text"
+  | "html"
+  | "rtf"
+  | "bookmark"
+  | "file"
+  | "application"
+  | "extension"
+  | "unknown";
 }
 
 class ClipboardManager {
@@ -80,27 +80,6 @@ class ClipboardManager {
     }
   }
 
-  private getFileTypeFromBase64(base64String: string) {
-    try {
-      const byteCharacters = atob(base64String);
-      const byteNumbers = new Array(byteCharacters.length);
-
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray]);
-      const file = new File([blob], "dummyFileName", { type: blob.type });
-
-      // You can use file.type to get the MIME type, and then determine the file extension if needed.
-      return file.type.split("/")[1] || null;
-    } catch (error) {
-      console.error("Error getting file type:", error);
-      return null;
-    }
-  }
-
   private async createCodeContainer(item: ClipboardItem) {
     // Create the main container
     const container = document.createElement("div");
@@ -111,23 +90,11 @@ class ClipboardManager {
     const code = document.createElement("code");
 
     if (item.data_type === "image") {
-      try {
-        const fileType = this.getFileTypeFromBase64(item.data);
-
-        if (fileType) {
-          console.log("File Type:", fileType);
-        } else {
-          console.error("Unable to determine file type.");
-        }
-
-        const img = document.createElement("img");
-        img.src = "data:image/png;base64," + item.data;
-        img.alt = "image";
-        img.className = "image-container";
-        container.appendChild(img);
-      } catch (error) {
-        console.error("Failed to load image from clipboard: ", error);
-      }
+      const img = document.createElement("img");
+      img.src = "data:image/png;base64," + item.data;
+      img.alt = "image";
+      img.className = "image-container";
+      container.appendChild(img);
     } else {
       code.textContent = item.data;
       pre.appendChild(code);
