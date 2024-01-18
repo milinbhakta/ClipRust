@@ -261,7 +261,8 @@ class ThemeSwitcher {
       const change =
         this.scheme === "dark" ? this.change.dark : this.change.light;
       button.innerHTML = change;
-      button.setAttribute("aria-label", change.replace(/<[^>]*>?/gm, ""));
+      button.setAttribute("aria-label", `Switch to ${this.scheme} mode`);
+      button.setAttribute("data-tooltip", `Switch to ${this.scheme} mode`);
     });
   }
 

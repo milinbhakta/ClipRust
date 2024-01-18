@@ -295,3 +295,7 @@ code {
   --box-shadow: none;
   border: none;
 }
+
+.theme-switcher i {
+  font-size: 1.5rem;
+}
