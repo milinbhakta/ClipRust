@@ -280,3 +280,34 @@ themeSwitcher.addButton({
   target: "#header",
 });
 themeSwitcher.init();
+
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollToTopBtn = document.getElementById("scrollToTop");
+
+  if (scrollToTopBtn !== null) {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    window.addEventListener("scroll", function () {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(function () {
+          if (lastScrollY > 20) {
+            scrollToTopBtn.style.display = "block";
+          } else {
+            scrollToTopBtn.style.display = "none";
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    scrollToTopBtn.addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+  }
+});
