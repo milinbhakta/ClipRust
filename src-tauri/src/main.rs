@@ -32,7 +32,6 @@ fn main() {
 }
 
 const MAX_ITEMS: usize = 50;
-// static CONTAINER: Mutex<Vec<String>> = Mutex::new(Vec::new());
 // save container with data and its type
 static CONTAINER: Mutex<Vec<(String, String)>> = Mutex::new(Vec::new());
 
@@ -159,11 +158,9 @@ fn hide(app: AppHandle) {
 #[tauri::command]
 fn delete_item(item: Item) -> Result<String, String> {
     let mut container = CONTAINER.lock().unwrap();
-    if container
-        .iter()
-        .any(|(data, data_type)| data == &item.data && data_type == &item.data_type)
-    {
-        container.retain(|(data, data_type)| data != &item.data || data_type != &item.data_type);
+    let initial_len = container.len();
+    container.retain(|(data, data_type)| data != &item.data || data_type != &item.data_type);
+    if container.len() < initial_len {
         let mut clipboard: Clipboard = Clipboard::new().unwrap();
         clipboard.clear().map_err(|err| {
             // Log or print the original error for debugging
