@@ -40,6 +40,7 @@
   --pico-primary-hover-background: #058686;
   --pico-primary-focus: rgba(10, 177, 177, 0.375);
   --pico-primary-inverse: #fff;
+  --theme-btn-color: #fff;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -305,7 +306,7 @@ code {
   padding: 0;
   margin: 0;
   position: fixed;
-  bottom: 0.5rem;
+  bottom: 0;
   right: 0;
   background: none;
   border: none;
@@ -315,4 +316,5 @@ code {
   --box-shadow: none;
   color: var(--theme-btn-color);
   cursor: pointer;
+  display: none;
 }
