@@ -6,6 +6,15 @@ ClipRust is a clipboard manager application that is designed to enhance the func
 
 ClipRust is used for managing clipboard data. It allows users to copy and delete clipboard items, and it displays notifications to inform users when an action has been performed. This makes it easier for users to keep track of their clipboard history and manage their copied items.
 
+<p float="left">
+  <img src="/screenshot/Screen Shot 1.png" width="100" />
+  <img src="/screenshot/Screen Shot 2.png" width="100" /> 
+  <img src="/screenshot/Screen Shot 3.png" width="100" />
+  <img src="/screenshot/Screen Shot 4.png" width="100" />
+  <img src="/screenshot/Screen Shot 5.png" width="100" />
+</p>
+
+
 ## How to Use It
 
 To use ClipRust, you first need to install it on your machine. The installation process involves cloning the repository, navigating into the project directory, installing the dependencies, and building the Tauri application. Once installed, you can start the application by running the Tauri development server.
@@ -44,5 +53,3 @@ Contributions are welcome! Please read our [contributing guide](CONTRIBUTING.md)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
