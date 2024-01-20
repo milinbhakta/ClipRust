@@ -109,7 +109,7 @@ code {
 
 /* clip text with background color */
 .app-name {
-  background: linear-gradient(to right, #1d976c, #93f9b9);
+  background: linear-gradient(30deg, #348756, #54b6ca);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

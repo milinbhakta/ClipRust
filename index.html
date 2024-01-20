@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,16 +6,20 @@
   <link rel="stylesheet" href="/src/styles.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clipper</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
   <script type="module" src="/src/main.ts" defer></script>
 </head>
 
-<body>
+<body class="container">
   <header class="container">
     <nav>
       <ul>
-        <h1 class="app-name container">ClipRust</h1>
+        <h1 class="app-name container">
+          <i class="fas fa-clipboard">
+            Cliprust
+          </i>
+        </h1>
       </ul>
       <ul>
         <li id="header"></li>
@@ -30,8 +34,9 @@
     </div>
     <!-- Scroll to top -->
   </main>
-  <button onclick="topFunction()" id="scrollToTop" data-tooltip="Go to top" title="Go to top"><i
-      class="fas fa-2x fa-angle-up"></i></button>
+  <button onclick="topFunction()" id="scrollToTop" data-tooltip="Go to top" title="Go to top">
+    <i class="fas fa-2x fa-angle-up"></i>
+  </button>
 </body>
 
 </html>
