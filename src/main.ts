@@ -17,7 +17,8 @@ interface ClipboardItem {
 
 class ClipboardManager {
   private clipContainer: HTMLElement | null;
-  private previousResponse: string[] = [];
+  private lastItems: ClipboardItem[] = [];
+  private isSearching: boolean = false;
 
   constructor(containerId: string) {
     this.clipContainer = document.getElementById(containerId);
@@ -80,6 +81,24 @@ class ClipboardManager {
     }
   }
 
+  private areItemsEqual(
+    items1: ClipboardItem[],
+    items2: ClipboardItem[]
+  ): boolean {
+    if (items1.length !== items2.length) {
+      return false;
+    }
+    for (let i = 0; i < items1.length; i++) {
+      if (
+        items1[i].data !== items2[i].data ||
+        items1[i].data_type !== items2[i].data_type
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private async createCodeContainer(item: ClipboardItem) {
     // Create the main container
     const container = document.createElement("div");
@@ -136,38 +155,67 @@ class ClipboardManager {
     return container;
   }
 
-  public init() {
-    invoke("items", { s: "" }).then(async (res: unknown) => {
-      const response = res as ClipboardItem[];
+  private async updateUIWithItems(
+    items: ClipboardItem[],
+    isSearch: boolean = false
+  ) {
+    if (this.clipContainer) {
+      // Clear the clipContainer
+      this.clipContainer.innerHTML = "";
 
-      // Check if the response is different from the previous response
-      if (JSON.stringify(response) !== JSON.stringify(this.previousResponse)) {
-        if (this.clipContainer) {
-          // Clear the clipContainer
-          this.clipContainer.innerHTML = "";
+      // Create a DocumentFragment to hold the new items
+      const fragment = document.createDocumentFragment();
 
-          // Create a DocumentFragment to hold the new items
-          const fragment = document.createDocumentFragment();
+      for (const item of items) {
+        const tmp = await this.createCodeContainer(item);
 
-          for (const item of response) {
-            const tmp = await this.createCodeContainer(item);
-
-            // Add the "append" class to new items only
-            if (!this.previousResponse.includes(item.data)) {
-              tmp.classList.add("append");
-            }
-
-            fragment.appendChild(tmp);
-          }
-
-          // Append all the new items at once
-          this.clipContainer.appendChild(fragment);
+        // Add the "append" class to new items only
+        if (!this.lastItems.some((prevItem) => prevItem.data === item.data)) {
+          tmp.classList.add("append");
         }
 
-        // Update the previous response
-        this.previousResponse = response.map((item) => item.data.toString());
+        fragment.appendChild(tmp);
       }
-    });
+
+      // Append all the new items at once
+      this.clipContainer.appendChild(fragment);
+    }
+
+    // Update the previous response only if it's not a search operation
+    if (!isSearch) {
+      this.lastItems = items;
+    }
+  }
+
+  private async handleSearch(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      if (target.value === "") {
+        // If the input is an empty string, load lastItems
+        await this.updateUIWithItems(this.lastItems, true);
+      } else {
+        this.isSearching = true;
+        invoke("items", { s: target.value }).then(async (response: unknown) => {
+          const items = response as ClipboardItem[];
+          if (!this.areItemsEqual(items, this.lastItems)) {
+            // Call updateUIWithItems with isSearch set to true
+            await this.updateUIWithItems(items, true);
+          }
+        });
+        this.isSearching = false;
+      }
+    }
+  }
+
+  public async init() {
+    if (!this.isSearching) {
+      invoke("items", { s: "" }).then(async (res: unknown) => {
+        const response = res as ClipboardItem[];
+        if (!this.areItemsEqual(response, this.lastItems)) {
+          await this.updateUIWithItems(response);
+        }
+      });
+    }
   }
 
   public registerShortcut() {
@@ -189,10 +237,21 @@ class ClipboardManager {
         console.error("Failed to register global shortcut:", error);
       });
   }
+
+  public registerSearchBox(searchBoxId: string) {
+    const searchBox = document.getElementById(searchBoxId) as HTMLInputElement;
+    if (searchBox) {
+      searchBox.addEventListener(
+        "input",
+        async (event) => await this.handleSearch(event)
+      );
+    }
+  }
 }
 
 const clipboardManager = new ClipboardManager("clipContainer");
 clipboardManager.registerShortcut();
+clipboardManager.registerSearchBox("search");
 setInterval(() => clipboardManager.init(), 1000);
 
 class ThemeSwitcher {

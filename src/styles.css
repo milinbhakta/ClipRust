@@ -318,3 +318,8 @@ code {
   cursor: pointer;
   display: none;
 }
+
+.search:focus {
+  border-color: var(--pico-primary-focus);
+  box-shadow: 0 0 0 0.1rem var(--pico-primary-focus);
+}
