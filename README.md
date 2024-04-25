@@ -41,6 +41,7 @@ The system clipboard typically only allows for one item to be stored at a time. 
 - `tsconfig.json`: Configuration file for TypeScript.
 - `.env`: Contains environment variables for the project. This file is ignored by Git for security reasons.
 - `.env.sample`: A template for the `.env` file. You can copy this file to `.env` and fill in your own values.
+- `iconGenerator.py`: A Script to generate icons for different OS and sizes
 
 ## Development
 
